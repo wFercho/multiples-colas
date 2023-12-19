@@ -12,7 +12,7 @@ export interface IProcessQueueProps {
 export interface IProcess {
     PID:number
     size:number
-    arrivalTime:number
+    arrivalTime:number | null
     burstTime:number
     state:ProcessQueueName
 }

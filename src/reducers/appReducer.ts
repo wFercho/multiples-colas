@@ -44,19 +44,19 @@ export const appReducer = (state: SimulatorState, payload: Payload): SimulatorSt
                         onreadyProcess.push({ ...onnewProcess[0], state: "READY" })
                         onnewProcess.shift()
                     } else {
-                        console.log("NO HAY PROCESOS EN NEW");
+                        //console.log("NO HAY PROCESOS EN NEW");
 
                     }
 
                 } else {
-                    console.log("NO HAY RAM SUFICIENTE");
+                    //console.log("NO HAY RAM SUFICIENTE");
                     isRAM = false
                 }
 
                 return { ...state, READY_PROCESSES: onreadyProcess, RAM: newRAM, NEW_PROCESSES: onnewProcess, isRAM }
 
             } else {
-                console.log("No hay procesos en NEW");
+                //console.log("No hay procesos en NEW");
 
                 return state
             }
@@ -108,7 +108,7 @@ export const appReducer = (state: SimulatorState, payload: Payload): SimulatorSt
             let onCPU2 = state.CPU_2?.map(p => p)
             const terminated = state.TERMINATED?.map(p => p)
 
-            console.log({ terminated });
+            
 
             if (onCPU1?.length >= 0) {
                 onCPU1 = onCPU1?.filter(p => {
@@ -146,8 +146,8 @@ export const appReducer = (state: SimulatorState, payload: Payload): SimulatorSt
             }
 
             if (terminated === undefined) {
-                const ter = state.TERMINATED?.map(p => p)
-                console.log({ ter });
+                //const ter = state.TERMINATED?.map(p => p)
+                
 
                 return { ...state, CPU_1: onCPU1, CPU_2: onCPU2, TERMINATED: [], RAM }
 

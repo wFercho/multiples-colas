@@ -11,7 +11,7 @@ export const CPU = ({CPU_number, process}:Props) => {
     <div className={styles.container}>
         <h3>CPU{CPU_number}</h3>
         {/* {process ? <Process {...process}/> : <></>} */}
-        <div className={styles.process}>{process?.map(p => <Process key={`CPU${CPU_number}-${p.PID}`}  {...p}/>)}</div>
+        <div>{process?.map(p => <Process key={`CPU${CPU_number}-${p.PID}`}  process={p} bg='CPU'/>)}</div>
     </div>
   )
 }

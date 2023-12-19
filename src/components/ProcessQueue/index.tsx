@@ -10,8 +10,8 @@ export const ProcessQueue = ({ typeQueue, processes, isRAM }: IProcessQueueProps
             <h2>
                 {queueName}
             </h2>
-            <div className={`${styles.processes_container} ${!isRAM && queueName === "Procesos Nuevos" ? styles.orange_bg : styles.green_bg}`}>
-                {processes?.map(p => <Process key={`${queueName}-${p.PID}`}  {...p} />)}
+            <div className={`${styles.processes_container}`}>
+                {processes?.map(p => <Process key={`${queueName}-${p.PID}`} process={p} bg={!isRAM && queueName === "Procesos Nuevos" ? "NO_RAM" : "NORMAL"} />)}
             </div>
         </div>
     )

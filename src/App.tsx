@@ -1,36 +1,54 @@
-import { useReducer, useLayoutEffect } from 'react'
+import { useEffect } from 'react'
 import styles from './App.module.css'
 import { CPU } from './components/CPU/CPU'
 import { ProcessQueue } from './components/ProcessQueue/index'
-import { appReducer, initialState } from './reducers/appReducer'
+import { useAppStore } from './stores/useAppStore'
+import { ProcessFormPortal } from './components/ProcessFormPortal'
 
 
 
 function App() {
 
-  const [state, dispatch] = useReducer(appReducer, initialState)
+  const isRAM = useAppStore((state) => state.isRAM)
+  const CPU_1 = useAppStore((state) => state.CPU_1)
+  const CPU_2 = useAppStore((state) => state.CPU_2)
+  const newProcesses = useAppStore((state) => state.NEW_PROCESSES)
+  const readyProcesses = useAppStore((state) => state.READY_PROCESSES)
+  const terminatedProcesses = useAppStore((state) => state.TERMINATED)
+  const waitingProcesses = useAppStore((state) => state.WAITING_PROCESSES)
+  const RAM = useAppStore((state) => state.RAM)
 
 
-  useLayoutEffect(() => {
+  const moveToReady = useAppStore((state) => state.moveToReady)
+  const moveToCPU = useAppStore((state) => state.moveToCPU)
+  const processOnCPU = useAppStore((state) => state.processOnCPU)
+  const clockTimer = useAppStore((state) => state.clockTimer)
+
+
+
+  useEffect(() => {
     const timer = setInterval(() => {
-      dispatch({ type: "MOVE_TO_READY" })
-
-    }, 2000)
-
-    const timer2 = setInterval(() => {
-      dispatch({ type: "MOVE_TO_CPU" })
-    }, 5000)
-
-    const timer3 = setInterval(() => {
-
-      dispatch({ type: "PROCESS_ON_CPU" })
+      startSimulation()
     }, 3000)
-    return () => { clearInterval(timer); clearInterval(timer2); clearInterval(timer3) }
+
+    return () => { clearInterval(timer) }
   }, [])
 
 
 
-  const handleStartSimulation = () => {
+  const startSimulation = () => {
+    setTimeout(() => {
+      clockTimer()
+      moveToReady()
+    }, 0)
+
+    setTimeout(() => {
+      moveToCPU()
+    }, 1000)
+
+    setTimeout(() => {
+      processOnCPU()
+    }, 2000)
 
 
   }
@@ -38,21 +56,21 @@ function App() {
   return (
     <div className={styles.container}>
       <div className={styles.menu_container}>
-        <h2 className={`${styles.RAM} ${!state.isRAM && styles.orange_bg}`}>RAM: {state.RAM}</h2>
+        <h2 className={`${styles.RAM} ${!isRAM && styles.orange_bg}`}>RAM: {RAM}MB</h2>
         <div className={styles.cpus}>
           <div className={styles.cpu_1}>
-            <CPU CPU_number={1} process={state.CPU_1} />
+            <CPU CPU_number={1} process={CPU_1} />
           </div>
           <div className={styles.cpu_2}>
-            <CPU CPU_number={2} process={state.CPU_2} />
+            <CPU CPU_number={2} process={CPU_2} />
           </div>
         </div>
-        <div>{/* <button onClick={handleStartSimulation}>INICIAR</button> */}</div>
+        <div><ProcessFormPortal /></div>
       </div>
-      <div className={styles.new}><ProcessQueue typeQueue='NEW' processes={state.NEW_PROCESSES} isRAM={state.isRAM} /></div>
-      <div className={styles.ready}><ProcessQueue typeQueue='READY' processes={state.READY_PROCESSES} isRAM={state.isRAM} /></div>
-      <div className={styles.waiting}><ProcessQueue typeQueue='WAITING' processes={state.WAITING_PROCESSES} isRAM={state.isRAM} /></div>
-      <div className={styles.terminated}><ProcessQueue typeQueue='TERMINATED' processes={state.TERMINATED} isRAM={state.isRAM} /></div>
+      <div className={styles.new}><ProcessQueue typeQueue='NEW' processes={newProcesses} isRAM={isRAM} /></div>
+      <div className={styles.ready}><ProcessQueue typeQueue='READY' processes={readyProcesses} isRAM={isRAM} /></div>
+      <div className={styles.waiting}><ProcessQueue typeQueue='WAITING' processes={waitingProcesses} isRAM={isRAM} /></div>
+      <div className={styles.terminated}><ProcessQueue typeQueue='TERMINATED' processes={terminatedProcesses} isRAM={isRAM} /></div>
     </div>
   )
 }
