@@ -1,0 +1,16 @@
+.container {
+    background-color: #0D7F45;
+    height: 150px;
+    border: 3px solid black;
+    border-radius: 5px;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.process {
+    background-color: #114829;
+}
