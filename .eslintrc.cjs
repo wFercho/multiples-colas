@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   env: { browser: true, es2020: true },
   extends: [
+    'airbnb',
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
@@ -15,4 +16,5 @@ module.exports = {
       { allowConstantExport: true },
     ],
   },
+  overrides: [{ rules: { "no-unused-vars": ["warn"], } }]
 }
